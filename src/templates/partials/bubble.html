@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Load d3.js and the geo projection plugin -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+<!-- Create an element where the map will take place -->
+<div id="bubble"></div>
+<script>
+
+var div = d3.select("#bubble").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
+let pageWidth = 2000
+
+var margin = {top: 25, right: 220, bottom: 50, left: 75},
+width = pageWidth - margin.left - margin.right;
+width = Math.min(pageWidth, 2000 - margin.left - margin.right);
+height = 0.4 * width;
+
+// The svg
+    var svg = d3.select("#bubble").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// Map and projection
+var projection = d3.geoMercator()
+    .center([-98.5795,39.8283])                // GPS of location to zoom on
+    .scale(1100)                       // This is like the zoom
+    .translate([ width/2, height/2 ])
+
+// Create data for circles:
+var markers = [
+    {size: 58913, group: 'University of Central Florida', plan: 'Planning for in-person', lat: 28.6024, long: -81.2001}, {size: 53743, group: 'Texas A&M College Station', plan: 'Planning for in-person', lat: 30.6188, long: -96.3365}, {size: 46820, group: 'Ohio State University', plan: 'Planning for in-person', lat: 39.9612, long: -82.9988}, {size: 42844, group: 'Arizona State University', plan: 'Proposing a hybrid model', lat: 33.4246, long: -111.928}, {size: 40804, group: 'University of Texas at Austin', plan: 'Proposing a hybrid model', lat: 30.2849, long: -97.7341}, {size: 40363, group: 'Pennsylvania State University', plan: 'Planning for in-person', lat: 40.7982, long: -77.8599}, {size: 39423, group: 'Michigan State University', plan: 'Proposing a hybrid model', lat: 44.3148, long: -85.6024}, {size: 39397, group: 'Utah Valley University', plan: 'Proposing a hybrid model', lat: 40.2788, long: -111.7154}, {size: 38348, group: 'University of Houston', plan: 'Considering a range of scenarios', lat: 29.7199, long: -95.3422}, {size: 36039, group: 'Rutgers University', plan: 'Proposing a hybrid model', lat: 40.5008, long: -74.4474}, {size: 35491, group: 'University of Florida', plan: 'Proposing a hybrid model', lat: 29.6436, long: -82.3549}, {size: 35223, group: 'University of Arizona', plan: 'Planning for in-person', lat: 32.2319, long: -110.9501}, {size: 34900, group: 'CSU  Northridge', plan: 'Planning for online', lat: 34.641, long: -118.5277}, {size: 34468, group: 'CSU  Fullerton', plan: 'Planning for online', lat: 33.8829, long: -117.4869}, {size: 34200, group: 'Texas State University', plan: 'Planning for in-person', lat: 29.8884, long: -97.9384}, {size: 33673, group: 'University of Illinois at Urbana-Champaign', plan: 'Proposing a hybrid model', lat: 40.102, long: -88.2272}, {size: 33028, group: 'University of Alabama at Tuscaloosa', plan: 'Planning for in-person', lat: 33.214, long: -87.5391}, {size: 32991, group: 'Indiana University', plan: 'Proposing a hybrid model', lat: 39.1754, long: -86.5126}, {size: 32672, group: 'Purdue University', plan: 'Planning for in-person', lat: 40.4237, long: -86.9212}, {size: 32238, group: 'University of South Florida', plan: 'Proposing a hybrid model', lat: 28.0587, long: -82.4139}, {size: 32099, group: 'University of Washington', plan: 'Proposing a hybrid model', lat: 47.655548, long: -122.3032}, {size: 31957, group: 'Texas Tech University', plan: 'Planning for in-person', lat: 33.5843, long: -101.8783}, {size: 31577, group: 'University of California at Los Angeles', plan: 'Planning for online', lat: 34.0689, long: -118.4452}, {size: 31455, group: 'University of Minnesota', plan: 'Planning for in-person', lat: 44.974, long: -93.2277}, {size: 31447, group: 'CSU  Long Beach', plan: 'Planning for online', lat: 33.7838, long: -118.1141}, {size: 31347, group: 'University of North Texas', plan: 'Planning for in-person', lat: 33.2075, long: -97.1526}, {size: 30718, group: 'University of California at Davis', plan: 'Proposing a hybrid model', lat: 38.5382, long: -121.7617}, {size: 30762, group: 'University of Maryland at College Park', plan: 'Proposing a hybrid model', lat: 38.9869, long: -76.9426}, {size: 30392, group: 'CSU  San Diego State University', plan: 'Proposing a hybrid model', lat: 32.776, long: -117.0713}, {size: 30360, group: 'University of Wisconsin at Madison', plan: 'Proposing a hybrid model', lat: 43.0766, long: -89.4125}, {size: 30318, group: 'University of Michigan at Ann Arbor', plan: 'Proposing a hybrid model', lat: 42.278, long: -83.7382}, {size: 30285, group: 'University of California at San Diego', plan: 'Proposing a hybrid model', lat: 33.0, long: -117.034}, {size: 30152, group: 'University of Colorado at Boulder', plan: 'Proposing a hybrid model', lat: 40.0076, long: -105.2659}, {size: 29736, group: 'University of California at Irvine', plan: 'Planning for online', lat: 33.2405, long: -117.8443}, {size: 29672, group: 'Temple University', plan: 'Proposing a hybrid model', lat: 39.98, long: -75.16}, {size: 29621, group: 'Iowa State University', plan: 'Proposing a hybrid model', lat: 42.0266, long: -93.6465}, {size: 29611, group: 'University of Georgia', plan: 'Planning for in-person', lat: 33.948, long: -83.3773}, {size: 28728, group: 'Florida State University', plan: 'Planning for in-person', lat: 30.4419, long: -84.2985}, {size: 28329, group: 'University of Texas at Arlington', plan: 'Proposing a hybrid model', lat: 32.7291, long: -97.1121}, {size: 28317, group: 'CSU  Sacramento', plan: 'Planning for online', lat: 38.5613, long: -121.0241}, {size: 27988, group: 'Texas A&M San Antonio', plan: 'Proposing a hybrid model', lat: 29.5827, long: -98.6189}, {size: 27465, group: 'Weber State University', plan: 'Planning for in-person', lat: 41.1925, long: -111.9445}, {size: 27271, group: 'CSU  San Jose State University', plan: 'Planning for online', lat: 37.3352, long: -121.8811}, {size: 27193, group: 'Virginia Tech', plan: 'Proposing a hybrid model', lat: 37.2284, long: -80.4234}, {size: 27190, group: 'Georgia State University', plan: 'Proposing a hybrid model', lat: 33.7531, long: -84.3853}, {size: 27078, group: 'Northern Arizona University', plan: 'Planning for in-person', lat: 35.1804, long: -111.654}, {size: 26932, group: 'University of Cincinnati', plan: 'Waiting to decide', lat: 39.1329, long: -84.515}, {size: 26733, group: 'University of South Carolina', plan: 'Planning for in-person', lat: 33.9938, long: -81.0299}, {size: 26436, group: 'CSU  San Francisco State University', plan: 'Planning for online', lat: 37.7241, long: -122.4799}, {size: 26192, group: 'George Mason University', plan: 'Planning for in-person', lat: 38.8298, long: -77.3074},{size: 30853, group: 'University of California at Berkeley', plan: 'Proposing a hybrid model', lat: 37.8719, long: -122.2585}
+
+];
+
+// Load external data and boot
+//d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson", function(data){
+//d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json", function(data) {
+d3.json("https://raw.githubusercontent.com/johan/world.geo.json/master/countries/USA.geo.json", function(data) {
+
+    // Filter data
+    data = data.features.filter( function(d){return d.properties.name=="United States of America"} )
+
+    // Create a color scale
+    var color = d3.scaleOrdinal()
+      .domain(['Planning for in-person', 'Proposing a hybrid model',
+       'Planning for online', 'Considering a range of scenarios',
+       'Waiting to decide'])
+      .range([ "#402D54", "#8FD175", "#D18975", "#3792cb", "#ffa500"])
+
+    // Add a scale for bubble size
+    var size = d3.scaleLinear()
+      .domain([1,100])  // What's in the data
+      .range([ 4, 50])  // Size in pixel
+
+    // Draw the map
+    svg.append("g")
+        .selectAll("path")
+        .data(data)
+        .enter()
+        .append("path")
+          .attr("fill", "#b8b8b8")
+          .attr("d", d3.geoPath()
+              .projection(projection)
+          )
+        .style("stroke", "black")
+        .style("opacity", 1)
+
+    // Add circles:
+    svg
+      .selectAll("myCircles")
+      .data(markers)
+      .enter()
+      .append("circle")
+        .attr("cx", function(d){ return projection([d.long, d.lat])[0] })
+        .attr("cy", function(d){ return projection([d.long, d.lat])[1] })
+        .attr("r", function(d){ return size((d.size / 8000) ** 2) })
+        .style("fill", function(d){ return color(d.plan) })
+        .attr("stroke", "white")
+        .attr("stroke-width", 0.8)
+        .attr("fill-opacity", .7)
+      .on("mouseover", function(d) {
+        d3.select(this).style("fill", d3.rgb(color(d.plan)).darker(2))
+        div.transition()
+          .duration(200)
+          .style("opacity", .9)
+          let p = d.group + "\n" + d.plan.toString()
+          div.html(p)
+              .style("left", (d3.event.pageX + 10) + "px")
+              .style("top", (d3.event.pageY - 15) + "px")
+              .style("font-size", "12px")
+              .style("opacity", 0.7);
+          })
+      .on("mouseout", function(d) {
+        d3.select(this).style("fill", color(d.plan))
+        div.transition()
+          .duration(300)
+          .style("opacity", 0);
+      })
+});
+
+</script>
