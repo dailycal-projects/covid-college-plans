@@ -15,3 +15,8 @@ $sans: $lato;
   font-family: $sans;
   font-weight: 700;
 }
+
+@font-face {
+  font-family: "tiempos";
+  src: url("../fonts/TiemposHeadline-Medium.otf") format("opentype");
+}

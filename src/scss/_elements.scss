@@ -27,6 +27,15 @@ body {
   font-size: 17px;
 }
 
+button {
+  color: $black;
+  font-family: 'BentonSans';
+  position: relative;
+  margin: 0;
+  min-height: 100%;
+  font-size: 13px;
+}
+
 a{
   color: #0a7cc4;
   &:hover, &:focus {
@@ -120,19 +129,22 @@ h4,
 h5 {
   font-family: $sans;
   margin: 0 auto 8px;
-  //max-width: 100%;
-  //text-align: center;
+  text-align: left;
   max-width: 600px;
   overflow-wrap: break-word;
 
-  + p{
+  @media (max-width: $width-small) {
+    margin-left: 15px;
+  }
+
+  + p {
     margin-top: 0px;
   }
 
   &.serif{
     font-family: $tisa;
 
-    + p{
+    + p {
       margin-top: 5px;
     }
   }

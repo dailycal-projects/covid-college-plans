@@ -112,3 +112,28 @@
     }
   }
 }
+
+button {
+  border: none;
+  padding: 3px 8px;
+  background-color: #b3cfdd;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 8px;
+  font-family: "benton-sans";
+}
+
+@media screen and (max-width: 900px) {
+  button {
+    font-size: 12px;
+    padding: 3px 5px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  button {
+    font-size: 10px;
+    padding: 3px 5px;
+  }
+}

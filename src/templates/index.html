@@ -35,22 +35,17 @@
     <body>
       {% include "partials/_nav.html" %}
       {% include "partials/_header.html" %}
-      <center>{% include "partials/bubble_cal.html" %}</center>
+      <center>{% include "partials/bubble_usa.html" %}</center>
 
-      <article class="container">
-        <p>Hi! To find more instructions on how to navigate this template of code, if you haven't included ArchieML support (this pulls specifically-formatted text from a Google Doc with shared settings of "Anyone with the link can view"), then add ArchieML support to this project for a copy of <a href="https://docs.google.com/document/d/1KimvJF9qiNHZ_gx32hhGanN639-JYVeMtFSsqa3w1Lk/edit">this Google Doc</a> that is appropriately shared. Or if you've added Archie configuration and provided a doc id, then in terminal, exit out of the current process and run `gulp archie`.</p>
-
-        {% for section in ARCHIE.sections %}
-            {% include '_sections/' + section.type +'.html' %}
-        {% endfor %}
-        <!-- Breakpoint reminder which you can delete -->
-        {% include "partials/_breakpoints.html" %}
-      </article>
+      <div class="story">
+        <p align='justify'>Hi! To find more instructions on how to navigate this template of code, if you haven't included ArchieML support (this pulls specifically-formatted text from a Google Doc with shared settings of "Anyone with the link can view"), then add ArchieML support to this project for a copy of <a href="https://docs.google.com/document/d/1KimvJF9qiNHZ_gx32hhGanN639-JYVeMtFSsqa3w1Lk/edit">this Google Doc</a> that is appropriately shared. Or if you've added Archie configuration and provided a doc id, then in terminal, exit out of the current process and run `gulp archie`.</p>
+      </div>
       {% include "partials/_footer.html" %}
       <script type="text/javascript">window.tweetText = "{{META.share.twitter.share_tweet}}";</script>
     </body>
+      <center>{% include "partials/bubble_big_ca.html" %}</center>
+      <center>{% include "partials/bar.html" %}</center>
 </html>
-
 
 {% block js %}
 <script type="text/javascript" src="js/main-app.bundle.js"></script>
