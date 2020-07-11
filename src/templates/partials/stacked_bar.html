@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<div id="stacked_bar"></div>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+// create the svg
+pageWidth = 1200;
+margin = {top: 20, right: 20, bottom: 30, left: 40};
+width = pageWidth - margin.left - margin.right;
+width = Math.min(width, 600 - margin.left - margin.right)
+height = (width * 0.7) - margin.top - margin.bottom;
+
+var svg = d3.select("#stacked_bar").append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom);
+g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// set x scale
+var x = d3.scaleBand()
+    .rangeRound([0, width])
+    .paddingInner(0.2)
+    .align(0.1);
+
+// set y scale
+var y = d3.scaleLinear()
+    .rangeRound([height, 0]);
+
+// set the colors
+var z = d3.scaleOrdinal()
+    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+var data = [
+  { Enrollment: "6000", "In-person": "18", Online: "3", Other: "5", Hybrid: "7" },
+  { Enrollment: "12000", "In-person": "4", Online: "7", Other: "0", Hybrid: "1" },
+  { Enrollment: "18000", "In-person": "0", Online: "5", Other: "0", Hybrid: "1" },
+  { Enrollment: "24000", "In-person": "0", Online: "4", Other: "1", Hybrid: "2" },
+  { Enrollment: "30000", "In-person": "0", Online: "6", Other: "0", Hybrid: "4" },
+  { Enrollment: "36000", "In-person": "0", Online: "3", Other: "0", Hybrid: "4" },
+];
+
+  var keys = ["In-person", "Online", "Other", "Hybrid"]
+
+  x.domain(["0", "6000", "12000", "18000", "24000", "30000", "36000"]);
+  y.domain([0, 30]).nice();
+  z.domain(keys);
+
+  g.append("g")
+    .selectAll("g")
+    .data(d3.stack().keys(keys)(data))
+    .enter().append("g")
+      .attr("fill", function(d) { return z(d.key); })
+    .selectAll("rect")
+    .data(function(d) { return d; })
+    .enter().append("rect")
+      .attr("x", function(d) { return x(d.data.Enrollment) - 40; })
+      .attr("y", function(d) { return y(d[1]); })
+      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+      .attr("width", x.bandwidth())
+    .on("mouseover", function() { tooltip.style("display", null); })
+    .on("mouseout", function() { tooltip.style("display", "none"); })
+    .on("mousemove", function(d) {
+      console.log(d);
+      var xPosition = d3.mouse(this)[0];
+      var yPosition = d3.mouse(this)[1];
+      tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+      tooltip.select("text").text(d[1] - d[0]);
+    });
+
+  g.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(0," + height + ")")
+      .attr("font-family", "benton-sans")
+      .call(d3.axisBottom(x));
+
+  g.append("g")
+      .attr("class", "axis")
+      .attr("font-size", 14)
+      .call(d3.axisLeft(y).ticks(5))
+    .append("text")
+      .attr("x", 2)
+      .attr("y", y(y.ticks().pop()) + 0.5)
+      .attr("dy", "0.32em")
+      .attr("fill", "#000")
+      .attr("font-family", "benton-sans")
+      .attr("font-weight", "bold")
+      .attr("text-anchor", "start");
+
+  var legend = svg.append("g")
+      .attr("font-family", "benton-sans")
+      .attr("font-size", 14)
+      .attr("text-anchor", "end")
+    .selectAll("g")
+    .data(keys.slice().reverse())
+    .enter().append("g")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+  legend.append("rect")
+      .attr("x", width - 50)
+      .attr("width", 19)
+      .attr("height", 19)
+      .attr("fill", z);
+
+  legend.append("text")
+      .attr("x", width - 20)
+      .attr("text-anchor", "start")
+      .attr("y", 9.5)
+      .attr("dy", "0.32em")
+      .text(function(d) { return d; });
+
+  // Prep the tooltip bits, initial display is hidden
+  var tooltip = svg.append("g")
+    .attr("class", "tooltip")
+    .style("display", "none");
+  tooltip.append("rect")
+    .attr("width", 30)
+    .attr("height", 20)
+    .attr("fill", "white")
+    .style("opacity", 0.5);
+  tooltip.append("text")
+    .attr("x", 15)
+    .attr("dy", "1.2em")
+    .style("text-anchor", "middle")
+    .attr("font-family", "benton-sans")
+    .attr("font-size", "14px")
+    .attr("font-weight", "bold");
+</script>
