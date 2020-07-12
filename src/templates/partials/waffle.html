@@ -1,314 +1,289 @@
 <!DOCTYPE html>
-<html>
 
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <style>
+    <meta charset="utf-8">
+    <title>d3-waffle</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <button id=all onclick="update(data1)">All&nbsp;</button>
+    <button id=public onclick="update(data2)">Public&nbsp;</button>
+    <button id=private onclick="update(data3)">Private&nbsp;</button>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script type="text/javascript">
+function d3waffle() {
+  let margin = { top: 10, right: 10, bottom: 10, left: 10 },
+    icon = '&#9632;',
+    scale = 1,
+    rows = 10,
+    adjust = 0.8,
+    colorscale = d3.scaleOrdinal(d3.schemeCategory10),
+    appearancetimes = function (d, i) { return 500; },
+    height = 200,
+    magic_padding = 5;
 
-  body {
-    font-family: Helvetica, sans serif;
-    font-size: 16px;
-    color: #333;
-  }
+  function chart(selection) {
+    selection.each((data) => {
+      selection.selectAll('*').remove();
 
-  .chart {
-    margin: 40px;
-    width: 620px;
-  }
+      /* setting parameters and data */
+      const idcontainer = selection._groups[0][0].id; // I need to change thiz plz
+      const total = d3.sum(data, d => d.value);
 
-  .label {
-    font-size: 18px;
-    margin-bottom: 10px;
-    font-weight: bold;
-  }
+      /* updating data */
+      data.forEach((d, i) => {
+        data[i].class = slugify(d.name);
+        data[i].scalevalue = Math.round(data[i].value * scale);
+        data[i].percent = data[i].value / total;
+      });
 
-  .legend {
-    padding-bottom: 7px;
-  }
+      const totalscales = d3.sum(data, d => d.scalevalue);
+      const cols = Math.ceil(totalscales / rows);
+      const griddata = cartesianprod(d3.range(cols), d3.range(rows));
+      const detaildata = [];
 
-  .legend_item {
-    display: inline-block;
-    padding-right: 10px;
-    margin-bottom: 2px;
-  }
-
-  .legend_item_icon, .legend_item_text {
-    display: inline-block;
-    vertical-align: middle;
-  }
-
-  .legend_item_icon {
-    margin-right: 5px;
-    height: 10px;
-    width: 10px;
-  }
-
-  </style>
-
-</head>
-
-<body>
-  <div class="chart"></div>
-  <script src="https://d3js.org/d3.v4.min.js"></script>
-
-  <script>
-    var WaffleChart = function() {
-
-  var $_selector,
-      $_data,
-      $_label,
-      $_cellSize,
-      $_cellGap,
-      $_rows,
-      $_columns,
-      $_rounded,
-      $_keys,
-      $_useWidth;
-
-  var defaults = {
-    size: 6,
-    rows: 50,
-    columns: 100,
-    rounded: false,
-    gap: 2
-  };
-
-  function generatedWaffleChart() {
-
-    $_keys = d3.keys($_data[0]);
-
-    var obj = {
-      selector: $_selector,
-      data: $_data,
-      label: $_label,
-      size: $_cellSize,
-      gap: $_cellGap,
-      rows: $_rows,
-      columns: $_columns,
-      rounded: $_rounded
-    };
-
-    drawWaffleChart(obj);
-
-  }
-
-  function drawWaffleChart(_obj) {
-
-    if (!_obj.size) { _obj.size = defaults.size; }
-    if (!_obj.rows) { _obj.rows = defaults.rows; }
-    if (!_obj.columns) { _obj.columns = defaults.columns; }
-    if (_obj.gap === undefined) { _obj.gap = defaults.gap; }
-    if (_obj.rounded === undefined) { _obj.columns = defaults.rounded; }
-
-    var formattedData = [];
-    var domain = [];
-    var value = $_keys[$_keys.length - 1];
-    var total = d3.sum(_obj.data, function(d) { return d[value]; });
-
-    if ($_useWidth) {
-      var forcedWidth = d3.select(_obj.selector).node().getBoundingClientRect().width;
-      _obj.columns = Math.floor(forcedWidth / (_obj.size + _obj.gap));
-    }
-
-    var squareVal = total / (_obj.rows * _obj.columns);
-
-    _obj.data.forEach(function(d, i) {
-      d[value] = +d[value];
-      d.units = Math.floor(d[value] / squareVal);
-      Array(d.units + 1).join(1).split('').map(function() {
-        formattedData.push({
-          squareVal: squareVal,
-          units: d.units,
-          value: d[value],
-          groupIndex: i
+      data.forEach((d) => {
+        d3.range(d.scalevalue).forEach((e) => {
+          detaildata.push({ name: d.name, class: d.class });
         });
       });
-      domain.push(d[$_keys[0]]);
-    });
 
-    var red = "#CE2A23";
-
-    var color = d3.scaleLinear()
-      .domain([1, _obj.data.length - 1])
-      .interpolate(d3.interpolateRgb)
-      .range(["#555", "#EEE"]);
-
-    // add label
-
-    if (_obj.label) {
-      d3.select(_obj.selector)
-        .append("div")
-        .attr("class", "label")
-        .text(_obj.label);
-    }
-
-    // add legend
-
-    var legend = d3.select($_selector)
-      .append("div")
-      .attr("class", "legend");
-
-    var legendItem = legend.selectAll("div")
-      .data(_obj.data);
-
-    legendItem.enter()
-      .append("div")
-      .attr("class", function(d, i) {
-        return "legend_item legend_item_" + (i + 1);
+      detaildata.forEach((d, i) => {
+        detaildata[i].col = griddata[i][0];
+        detaildata[i].row = griddata[i][1];
       });
 
-    var legendIcon = legendItem.append("div")
-      .attr("class", "legend_item_icon")
-      .style("background-color", function(d, i) {
-        if (i === 0) {
-          return red;
-        } else {
-          return color(i);
-        }
-      });
+      /* console.log("detail data length: ", detaildata.length) */
 
-    if (_obj.rounded) {
-      legendIcon.style("border-radius", "25px");
-    }
+      const gridSize = ((height - margin.top - margin.bottom) / rows);
 
-    legendItem.append("span")
-      .attr("class", "legend_item_text")
-      .text(function(d) { return d[$_keys[0]]; });
+      /* setting the container */
+      const svg = selection.append('svg')
+            .attr('width', "1200px")
+            .attr('height', `${height}px`)
+            .append('g')
+            .attr('transform', `translate(${margin.left},${margin.top})`)
+            .style('cursor', 'default');
 
-    // set up the dimensions
+      const tooltip = d3.select('body')
+            .append('div')
+            .attr('class', 'waffle-tooltip')
+            .style('position', 'absolute')
+            .style('text-align', 'right')
+            .style('background', '#333')
+            .style('margin', '3px')
+            .style('color', 'white')
+            .style('padding', '3px')
+            .style('border', '0px')
+            .style('border-radius', '3px') // 3px rule
+            .style('opacity', 0)
+            .style('cursor', 'default');
 
-    var width = (_obj.size * _obj.columns) + (_obj.columns * _obj.gap) - _obj.gap;
-    var height = (_obj.size * _obj.rows) + (_obj.rows * _obj.gap) - _obj.gap;
+      const nodes = svg.selectAll('.node')
+            .data(detaildata)
+            .enter().append('g')
+            .attr('class', 'node')
+            .attr('transform', d => `translate(${(d.col) * gridSize},${(rows - d.row - 1) * gridSize})`);
 
-    if ($_useWidth) {
-      width = d3.select(_obj.selector).node().getBoundingClientRect().width;
-    }
+      /* this is necesary, when the icons are small/thin activate mouseout */
+      nodes.append('text')
+            .style('opacity', 0)
+            .html(icon)
+            .attr('class', d => d.class)
+            .attr('font-family', 'FontAwesome')
+            .attr('transform', d => `translate(${gridSize / 2},${5 / 6 * gridSize})`)
+            .style('text-anchor', 'middle')
+            .style('fill', d => colorscale(d.class))
+            .style('font-size', function (d) {
+              val = 9;
+              val2 = 2.5;
+              textsize = Math.min(val2 * gridSize, (val2 * gridSize - val) / this.getComputedTextLength() * val);
+              return `${textsize * adjust}px`;
+            })
+            .on('mouseover', mouseover)
+            .on('mouseout', mouseout)
+            .on('mousemove', mousemove)
+            .transition()
+            .duration(appearancetimes)
+            .style('opacity', 1);
 
-    var svg = d3.select(_obj.selector)
-      .append("svg")
-      .attr("class", "waffle")
-      .attr("width", width)
-      .attr("height", height);
+      nodes.append('rect')
+            .style('fill', 'white')
+            .attr('class', d => d.class)
+            .style('stroke', 'gray')
+            .attr('width', gridSize)
+            .attr('height', gridSize)
+            .on('mouseover', mouseover)
+            .on('mouseout', mouseout)
+            .on('mousemove', mousemove)
+            .style('opacity', 0);
 
-    var g = svg.append("g")
-      .attr("transform", "translate(0,0)");
-
-    // insert dem items
-
-    var item = g.selectAll(".unit")
-      .data(formattedData);
-
-    item.enter()
-      .append("rect")
-      .attr("class", "unit")
-      .attr("width", _obj.size)
-      .attr("height", _obj.size)
-      .attr("fill", function(d) {
-        if (d.groupIndex === 0) {
-          return red;
-        } else {
-          return color(d.groupIndex);
-        }
-      })
-      .attr("x", function(d, i) {
-        var col = Math.floor(i / _obj.rows);
-        return (col * (_obj.size)) + (col * _obj.gap);
-      })
-      .attr("y", function(d, i) {
-        var row = i % _obj.rows;
-        return (_obj.rows * (_obj.size + _obj.gap)) - ((row * _obj.size) + (row * _obj.gap)) - _obj.size - _obj.gap;
-      })
-      .append("title")
-      .text(function (d, i) {
-        return _obj.data[d.groupIndex][$_keys[0]] + ": " + Math.round((d.units / formattedData.length) * 100) + "%";
-      });
-
-    if (_obj.rounded) {
-      item
-        .attr("rx", (_obj.size / 2))
-        .attr("ry", (_obj.size / 2));
-    }
-
-  }
-
-  generatedWaffleChart.selector = function(value){
-    if (!arguments.length) { return $_selector; }
-    $_selector = value;
-    return generatedWaffleChart;
-  }
-
-  generatedWaffleChart.data = function(value){
-    if (!arguments.length) { return $_data; }
-    $_data = value;
-    return generatedWaffleChart;
-  }
-
-  generatedWaffleChart.useWidth = function(value){
-    if (!arguments.length) { return $_useWidth; }
-    $_useWidth = value;
-    return generatedWaffleChart;
-  }
-
-  generatedWaffleChart.label = function(value){
-    if (!arguments.length) { return $_label; }
-    $_label = value;
-    return generatedWaffleChart;
-  }
-
-  generatedWaffleChart.size = function(value){
-    if (!arguments.length) { return $_cellSize; }
-    $_cellSize = value;
-    return generatedWaffleChart;
-  }
-
-  generatedWaffleChart.gap = function(value){
-    if (!arguments.length) { return $_cellGap; }
-    $_cellGap = value;
-    return generatedWaffleChart;
-  }
-
-  generatedWaffleChart.rows = function(value){
-    if (!arguments.length) { return $_rows; }
-    $_rows = value;
-    return generatedWaffleChart;
-  }
-
-  generatedWaffleChart.columns = function(value){
-    if (!arguments.length) { return $_columns; }
-    $_columns = value;
-    return generatedWaffleChart;
-  }
-
-  generatedWaffleChart.rounded = function(value){
-    if (!arguments.length) { return $_rounded; }
-    $_rounded = value;
-    return generatedWaffleChart;
-  }
-
-  return generatedWaffleChart;
-
-};
-  </script>
-  <script>
-    data = [{"source": "Online", "value": 426366},
-            {"source": "Hybrid", "value": 208036},
-            {"source": "In-person", "value": 65740},
-            {"source": "Other", "value": 30693},
-    ]
-
-    var waffle = new WaffleChart()
-          .selector(".chart")
+      const legend = svg.selectAll('.legend')
           .data(data)
-          .useWidth(false)
-          .label("Value of producers' sales in 2013, in thousands of dollars")
-          .size(12)
-          .gap(2)
-          .rows(20)
-          .columns(50)
-          .rounded(true)();
+          .enter().append('g')
+          .attr('class', d => `${'legend' + ' '}${d.class}`)
+          .attr('transform', d => `translate(${cols * gridSize + magic_padding},${magic_padding})`);
 
-    // source: http://statshb.capp.ca/SHB/Sheet.asp?SectionID=4&SheetID=265
+      legend.append('text')
+            .attr('x', gridSize)
+            .attr('y', (d, i) => i * gridSize + i * magic_padding / 2)
+            .style('opacity', 1)
+            .html(d => icon)
+            .attr('class', d => d.class)
+            .attr('font-family', 'FontAwesome')
+            .attr('transform', d => `translate(${gridSize / 2},${5 / 6 * gridSize})`)
+            .style('fill', d => colorscale(d.class));
+            /* .style("font-size", function(d) {
+              val = 9;
+              val2 = 2.5;
+              textsize = Math.min(val2 * gridSize, (val2 * gridSize - val) / this.getComputedTextLength() * val);
+              return textsize * adjust + "px";
+            }); */
 
-  </script>
+      legend.append('text')
+            .attr('x', 1.5 * gridSize + magic_padding)
+            .attr('y', (d, i) => i * gridSize + i * magic_padding / 2)
+            .style('opacity', 1)
+            .html(d => d.name)
+            .attr('class', d => `${'waffle-legend-text' + ' '}${d.class}`)
+            .attr('transform', d => `translate(${gridSize / 2},${5 / 6 * gridSize})`);
+
+      function mouseover(d) {
+        tooltip.transition().duration(100).style('opacity', 0.9);
+        el = data.filter(e => e.name == d.name)[0];
+        txt = `<b>${el.name}</b><br>${d3.format(',')(el.value)}<br>(${d3.format('.0%')(el.percent)})`;
+        tooltip.html(txt);
+
+        d3.select(`#${idcontainer}`).selectAll('text').transition().duration(100).style('opacity', 0.2);
+        d3.select(`#${idcontainer}`).selectAll(`text.${d.class}`).transition().duration(100).style('opacity', 1);
+      }
+
+      function mouseout(d) {
+        tooltip.transition().duration(100).style('opacity', 0);
+        d3.select(`#${idcontainer}`).selectAll('text').transition().duration(100).style('opacity', 1);
+      }
+
+      function mousemove(d) {
+        tooltip
+            .style('left', `${d3.event.pageX + 0}px`)
+            .style('top', `${d3.event.pageY + -70}px`);
+      }
+    });
+  }
+
+  chart.width = function (_) {
+    if (!arguments.length) return width;
+    width = _;
+    return chart;
+  };
+
+  chart.height = function (_) {
+    if (!arguments.length) return height;
+    height = _;
+    return chart;
+  };
+
+  chart.rows = function (_) {
+    if (!arguments.length) return rows;
+    rows = _;
+    return chart;
+  };
+
+  chart.icon = function (_) {
+    if (!arguments.length) return icon;
+    icon = _;
+    return chart;
+  };
+
+  chart.scale = function (_) {
+    if (!arguments.length) return scale;
+    scale = _;
+    return chart;
+  };
+
+  chart.colorscale = function (_) {
+    if (!arguments.length) return colorscale;
+    colorscale = _;
+    return chart;
+  };
+
+  chart.appearancetimes = function (_) {
+    if (!arguments.length) return appearancetimes;
+    appearancetimes = _;
+    return chart;
+  };
+
+  chart.adjust = function (_) {
+    if (!arguments.length) return adjust;
+    adjust = _;
+    return chart;
+  };
+
+  return chart;
+}
+
+function slugify(text) {
+  return text.toString().toLowerCase()
+    .replace(/\s+/g, '-')           // Replace spaces with -
+    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+    .trim();                        // Trim - from end of text
+}
+
+/* http://stackoverflow.com/questions/12303989/cartesian-product-of-multiple-arrays-in-javascript */
+function cartesianprod(paramArray) {
+  function addTo(curr, args) {
+    let i,
+      copy,
+      rest = args.slice(1),
+      last = !rest.length,
+      result = [];
+
+    for (i = 0; i < args[0].length; i++) {
+      copy = curr.slice();
+      copy.push(args[0][i]);
+
+      if (last) {
+        result.push(copy);
+      } else {
+        result = result.concat(addTo(copy, rest));
+      }
+    }
+
+    return result;
+  }
+
+
+  return addTo([], Array.prototype.slice.call(arguments));
+}
+        var data1 = [{"name": "Online", "value": 426366}, {"name": "Hybrid", "value": 208036}, {"name": "In-person", "value": 65740}, {"name": "Other", "value": 30693}];
+        var data2 = [{"name": "Online", "value": 406459}, {"name": "Hybrid", "value": 181658}, {"name": "In-person", "value": 0}, {"name": "Other", "value": 23070}];
+        var data3 = [{"name": "Online", "value": 19907}, {"name": "Hybrid", "value": 26378}, {"name": "In-person", "value": 65740}, {"name": "Other", "value": 7623}];
+
+      function update(data) {
+        var chart_public = d3waffle()
+                        .rows(5)
+                        .scale(1/8000)
+                        .icon("&#xf007;")
+                        .adjust(0.6)
+                        .colorscale(d3.scaleOrdinal(d3.schemeCategory10))
+                        .appearancetimes(function(d, i){
+                          mod = 13;
+                          val = i % mod;
+                          return val / mod * 1500;
+                        })
+                        .height(200);
+
+        d3.select("#container-1")
+          .datum(data)
+          .call(chart_public);
+      }
+
+    update(data1)
+    </script>
+</head>
+<body>
+<div class="container" id="container-1"></div>
 </body>
 </html>

@@ -115,6 +115,29 @@ hr {
 }
 
 @media screen and (max-width: 1100px) {
+  #legend {
+    svg {
+      zoom: 0.6;
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  #legend {
+    svg {
+      zoom: 0.4;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #legend {
+    svg {
+      zoom: 0.3;
+    }
+  }
+}
+@media screen and (max-width: 1100px) {
   #bubble_usa {
     svg {
       zoom: 0.6;

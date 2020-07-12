@@ -79,14 +79,14 @@ d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/g
         .enter().append("g")
           .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
       legend.append("rect")
-          .attr("x", width - 400)
+          .attr("x", 400)
           .attr("y", 0 - 20)
           .attr("width", 12)
           .attr("height", 12)
           .attr("fill", color)
           .attr("opacity", 0.8);
       legend.append("text")
-          .attr("x", width - 380)
+          .attr("x", 400)
           .attr("y", 0 - 14)
           .attr("dy", "0.32em")
           .text(function(d) { return d; });
