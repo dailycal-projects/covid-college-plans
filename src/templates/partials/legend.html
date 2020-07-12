@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Load d3.js and the geo projection plugin -->
+<link rel="stylesheet" href="https://use.typekit.net/mfo3lll.css">
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<center style='font-family:benton-sans'>Reopening Plans for 60 Largest Colleges in US</center>
+
+<!-- Create an element where the map will take place -->
+<div id="legend"></div>
+<script>
+
+let pageWidth = $(window).width();
+width = Math.min(pageWidth, 1200)
+var svg_legend = d3.select("#legend").append("svg")
+    .attr("width", width)
+    .attr("height", 100)
+    .append("g");
+
+    // Create a color scale
+    var color = d3.scaleOrdinal()
+      .domain(['In-person', 'Hybrid',
+       'Online', 'Considering range of plans',
+       'Waiting to decide'])
+       .range([ "#d18975", "#338A6C","#8F679C",  "#479BD1", "#f4803f"])
+
+      var legend = svg_legend.append("g")
+          .style("font-family", "benton-sans")
+          .style("font-size", 14)
+          .attr("text-anchor", "start")
+        .selectAll("g")
+        .data(['In-person', 'Hybrid',
+         'Online', 'Considering range of plans',
+         'Waiting to decide'])
+        .enter().append("g")
+          .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+      legend.append("rect")
+          .attr("x", width - 300)
+          .attr("y", 3)
+          .attr("width", 12)
+          .attr("height", 12)
+          .attr("fill", color)
+          .attr("opacity", 0.8);
+      legend.append("text")
+          .attr("x", width - 280)
+          .attr("y", 9)
+          .attr("dy", "0.32em")
+          .text(function(d) { return d; });
+
+</script>
