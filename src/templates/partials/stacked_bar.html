@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<center style='font-family:benton-sans'>Reopening Plans for Colleges in California (By Enrollment)</center></br>
+
 <div id="stacked_bar"></div>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
@@ -6,6 +8,7 @@
 margin = {top: 60, right: 100, bottom: 50, left: 70};
 width = pageWidth - margin.left - margin.right;
 width = Math.min(width, 600 - margin.left - margin.right)
+width = Math.max(width, 500)
 height = (width * 0.9) - margin.top - margin.bottom;
 
 var div = d3.select("#stacked_bar").append("div")
@@ -76,13 +79,6 @@ var data = [
           .duration(300)
           .style("opacity", 0);
       });
-
-  g.append("text")
-      .attr("x", (width / 2) - 250)
-      .attr("y", 0 - (margin.top / 1.5))
-      .style("font-size", 18)
-      .style("font-family", "benton-sans")
-      .text("Reopening Plans for Colleges in California (By Enrollment)")
 
   //g.append("text")
     //  .attr("x", (width / 2) - 100)

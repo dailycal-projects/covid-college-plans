@@ -184,6 +184,29 @@ hr {
   }
 }
 
+@media screen and (max-width: 1100px) {
+  #container-1 {
+    svg {
+      zoom: 0.6;
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  #container-1 {
+    svg {
+      zoom: 0.5;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #container-1 {
+    svg {
+      zoom: 0.3;
+    }
+  }
+}
   .axis path,
   .axis line {
     fill: none;

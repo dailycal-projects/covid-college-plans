@@ -16,10 +16,12 @@ var div = d3.select("#bubble_ca").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-var margin = {top: 0, right: 50, bottom: 0, left: 250},
+var margin = {top: 0, right: 50, bottom: 0, left: 0},
 width = pageWidth - margin.left - margin.right;
 width = Math.min(width, 1200 - margin.left - margin.right);
-height = (0.9 * width) - margin.top - margin.bottom;
+width = Math.max(width, 600);
+
+height = (0.7 * width) - margin.top - margin.bottom;
 if (width < 600) {height = (1.1 * width) - margin.top - margin.bottom;}
 
 // The svg2
@@ -37,7 +39,7 @@ if (width < 600) {scale = 1500, frac=0.5}
 var projection2 = d3.geoMercator()
     .center([-119.4179, 36.7783])                // GPS of location to zoom on
     .scale(scale)                       // This is like the zoom
-    .translate([ width/2 - 100, height/2 ])
+    .translate([ width/2, height/2 ])
 
 // Create data for circles:
 var markers_ca_all = [
@@ -68,6 +70,7 @@ d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/g
     var size = d3.scaleLinear()
       .domain([1,100])  // What's in the data
       .range([ 4, 50])  // Size in pixel
+
       var legend = svg2.append("g")
           .style("font-family", "benton-sans")
           .style("font-size", 14)
@@ -79,15 +82,15 @@ d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/g
         .enter().append("g")
           .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
       legend.append("rect")
-          .attr("x", 400)
-          .attr("y", 0 - 20)
+          .attr("x", 600)
+          .attr("y", 75)
           .attr("width", 12)
           .attr("height", 12)
           .attr("fill", color)
           .attr("opacity", 0.8);
       legend.append("text")
-          .attr("x", 400)
-          .attr("y", 0 - 14)
+          .attr("x", 620)
+          .attr("y", 81)
           .attr("dy", "0.32em")
           .text(function(d) { return d; });
 

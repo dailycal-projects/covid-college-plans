@@ -19,7 +19,7 @@
         {% if env == 'production' %}
         <link href="css/main-app.css" rel="stylesheet">
         {% endif %}
-        
+
         <!-- Google fonts -->
         <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
         <!-- Font awesome -->
@@ -36,34 +36,60 @@
       {% include "partials/_nav.html" %}
       {% include "partials/_header.html" %}
       <div class="story">
-        <p align='justify'>Hi! To find more instructions on how to navigate this template of code, if you haven't included ArchieML support (this pulls specifically-formatted text from a Google Doc with shared settings of "Anyone with the link can view"), then add ArchieML support to this project for a copy of <a href="https://docs.google.com/document/d/1KimvJF9qiNHZ_gx32hhGanN639-JYVeMtFSsqa3w1Lk/edit">this Google Doc</a> that is appropriately shared. Or if you've added Archie configuration and provided a doc id, then in terminal, exit out of the current process and run `gulp archie`.</p>
+        <p align='justify'>On June 15, UC Berkeley announced its reopening plans for the fall semester.
+          According to the most recent update, the university is offering “limited in-person classes,” while most classes remain remote.
+          To gain a better understanding of UC Berkeley’s reopening strategy, The Daily Californian compared UC Berkeley to other similar colleges and universities.</br></br>
+          To meet the virtual needs of students, instructors are improving remote learning techniques to simulate the interactive aspects of regular instruction. Beyond the classroom, UC Berkeley is striving to provide a more holistic college environment for returning and new students. Stephen Sutton, vice chancellor of student affairs, wrote in an email, “While we are pivoting to serve students who will be with us...remotely, we're keenly aware of how the entire student experience creates a Berkeley education.”</br></br>As a large public university, UC Berkeley faces challenges that smaller schools may not have to address. The university must implement strategies for managing tens of thousands of students who come from around the world and interact frequently in enclosed spaces.
+          UC Berkeley may be an early look at what reopening protocols might look like in cities next year. [Source pending - Professor Reingold]</br></br>
+          Reopening universities has gained new significance in the wake of a recent announcement by President Trump that international students must leave the United States if all of their classes are online. The president’s insistence on reopening schools is in contrast to the narrative among scientists and public health experts that a hasty reopening risks greater spread of COVID-19.
+        </p>
+        <h2> How does UC Berkeley compare? </h2></div>
+        <div class="story">
+
+        <p align='justify'>First, we examine large public universities. These schools face particular challenges due to large undergraduate populations and densely populated spaces. [Source pending - Professor Lewnard]. Their large scale also makes them a strong analogy for towns and cities that hope to end strict social distancing guidelines in the coming months.</p>
+        <p align='justify'>In the figure below, we have mapped the largest sixty universities in the United States, along with their proposed reopening strategy for the upcoming semester. We chose to sort universities by undergraduate enrollment, rather than total enrollment. The majority of these universities are public, with a few private universities such as New York University and Brigham Young University. UC Berkeley falls right around the median for size, with around 30,000 undergraduates. The combined enrollment of these schools is around 2 million college students.<p>
+        <p align='justify'>The color represents the reopening strategy. To clarify, “hybrid” means that a school is primarily remote, with a few in-person classes. “Online” is entirely remote, and “in-person” is mostly in-person. The size of the marker is proportional to the school’s undergraduate enrollment.</p>
       </div>
       <center>{% include "partials/legend.html" %}</center>
       <center>{% include "partials/bubble_usa.html" %}</center>
 
       <div class="story">
-        <p align='justify'>Hi! To find more instructions on how to navigate this template of code, if you haven't included ArchieML support (this pulls specifically-formatted text from a Google Doc with shared settings of "Anyone with the link can view"), then add ArchieML support to this project for a copy of <a href="https://docs.google.com/document/d/1KimvJF9qiNHZ_gx32hhGanN639-JYVeMtFSsqa3w1Lk/edit">this Google Doc</a> that is appropriately shared. Or if you've added Archie configuration and provided a doc id, then in terminal, exit out of the current process and run `gulp archie`.</p>
+        <p align='justify'>We see first that California’s universities stand out for the high percentage of entirely online classes. UC Berkeley, along with most other UC schools, has announced a hybrid plan. Several large universities (University of Central Florida, Texas A&M) remain optimistic that they
+          can offer in-person classes in the fall, though a remote option exists for students who wish to stay off campus.</p>
+        <p align='justify'>Second, we compare UC Berkeley to other schools within California. California was held up as an exemplar for how to deal with the virus, but has since seen a spike in cases. We included all four-year California universities over 7,000.</p>
       </div>
-      {% include "partials/_footer.html" %}
-      <script type="text/javascript">window.tweetText = "{{META.share.twitter.share_tweet}}";</script>
     </body>
       <center>{% include "partials/bubble_big_ca.html" %}</center>
       <div class="story">
-        <p align='justify'>Hi! To find more instructions on how to navigate this template of code, if you haven't included ArchieML support (this pulls specifically-formatted text from a Google Doc with shared settings of "Anyone with the link can view"), then add ArchieML support to this project for a copy of <a href="https://docs.google.com/document/d/1KimvJF9qiNHZ_gx32hhGanN639-JYVeMtFSsqa3w1Lk/edit">this Google Doc</a> that is appropriately shared. Or if you've added Archie configuration and provided a doc id, then in terminal, exit out of the current process and run `gulp archie`.</p>
+        <p align='justify'>As shown, the vast majority of California’s colleges have announced either
+          a hybrid or online model. Only Chapman University and California Baptist University plan on in-person classes.</p>
+        <p align='justify'>The Cal State and UC systems include the largest universities in the state.
+            So far, the two systems have diverged on their fall plans. The majority of Cal State schools have announced entirely remote classes, while several UC schools have hybrid reopening plans.</p>
+        <p align='justify'>The map above shows only midsize to large colleges in California. Smaller schools like Claremont McKenna and Harvey Mudd face their own challenges, and differ in their approach to reopening. Next, we contrast different reopening plans based on the college’s undergraduate enrollment.</p>
       </div>
       <center>{% include "partials/stacked_bar.html" %}</center>
       <div class="story">
-        <p align='justify'>Hi! To find more instructions on how to navigate this template of code, if you haven't included ArchieML support (this pulls specifically-formatted text from a Google Doc with shared settings of "Anyone with the link can view"), then add ArchieML support to this project for a copy of <a href="https://docs.google.com/document/d/1KimvJF9qiNHZ_gx32hhGanN639-JYVeMtFSsqa3w1Lk/edit">this Google Doc</a> that is appropriately shared. Or if you've added Archie configuration and provided a doc id, then in terminal, exit out of the current process and run `gulp archie`.</p>
+        <p align='justify'>We notice first that there are no colleges beyond the 12,000 mark that plan on in-person classes. Though the number of colleges planning on in-person classes is high, the number of students is relatively low. Below, you can see the aggregate number of college students enrolled in California and the current plan of their respective universities. To segment based on public or private universities only, click the button.</p>
       </div>
       <center>{% include "partials/waffle.html" %}</center>
+<script>
+document.getElementsByTagName('button')[0].click();
+</script>
       <div class="story">
-        <p align='justify'>Hi! To find more instructions on how to navigate this template of code, if you haven't included ArchieML support (this pulls specifically-formatted text from a Google Doc with shared settings of "Anyone with the link can view"), then add ArchieML support to this project for a copy of <a href="https://docs.google.com/document/d/1KimvJF9qiNHZ_gx32hhGanN639-JYVeMtFSsqa3w1Lk/edit">this Google Doc</a> that is appropriately shared. Or if you've added Archie configuration and provided a doc id, then in terminal, exit out of the current process and run `gulp archie`.</p>
-      </div>
+        <p align='justify'>As seen above, private universities compose a tiny fraction of California’s college student population. As of July 12, no public university plans on holding in-person classes. UC Berkeley falls into the minority of public universities which have a hybrid plan, though it is joined by several others like UC Davis and Stanford University.</p>
+        <h2> What's next?</h2></div>
+
+      <div class="story">
+        <p align='justify'>Since early July, UC Berkeley has seen a recent spate in COVID-19 cases, leading Anne Harte, director of University Health Services, to write in an email, “[A]t the rate we are seeing increases in cases, it’s becoming harder to imagine bringing our campus community back in the way we are envisioning.” Despite the spike,
+          the university remains cautiously committed to the hybrid strategy.</p>
+        <p align='justify'>Much remains unknown about the fall semester. UC Berkeley, along with its peers in California and across the nation, will need to think carefully about how to provide an education during a crisis unlike any other.</p>
     <div class="nerd-box">
 <h4>About this story</h4>
 <p align='left'>
   Data for re-opening plans for colleges was sourced from the <a href=""> Chronicle of Higher Education</a>. The plans are still in flux, and this article will be updated with new data when available.
 </p>
+{% include "partials/_footer.html" %}
+<script type="text/javascript">window.tweetText = "{{META.share.twitter.share_tweet}}";</script>
 <br>
 <h4>Support us</h4>
 <p>We're a nonprofit, student-run newsroom. Please consider <a href="https://donate.dailycal.org/">donating</a> to support our coverage.</p>

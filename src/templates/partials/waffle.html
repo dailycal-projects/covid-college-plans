@@ -6,22 +6,24 @@
     <title>d3-waffle</title>
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <button id=all onclick="update(data1)">All&nbsp;</button>
-    <button id=public onclick="update(data2)">Public&nbsp;</button>
-    <button id=private onclick="update(data3)">Private&nbsp;</button>
+    <center style='font-family:benton-sans'>How will California's college students attend school in the fall?</center></br>
+    <button onclick="update(data1)">All&nbsp;</button>
+    <button onclick="update(data2)">Public Colleges&nbsp;</button>
+    <button onclick="update(data3)">Private Colleges&nbsp;</button>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
     <script type="text/javascript">
 function d3waffle() {
-  let margin = { top: 10, right: 10, bottom: 10, left: 10 },
+  let margin = { top: 50, right: -50, bottom: 10, left: 0 },
     icon = '&#9632;',
     scale = 1,
-    rows = 10,
+    rows = 15,
     adjust = 0.8,
     colorscale = d3.scaleOrdinal(d3.schemeCategory10),
     appearancetimes = function (d, i) { return 500; },
-    height = 200,
     magic_padding = 5;
+    width = 950
+    height = (1.2 * width) - margin.bottom - margin.top;
 
   function chart(selection) {
     selection.each((data) => {
@@ -60,20 +62,21 @@ function d3waffle() {
 
       /* setting the container */
       const svg = selection.append('svg')
-            .attr('width', "1200px")
-            .attr('height', `${height}px`)
+            .attr('width', width)
+            .attr('height', height)
             .append('g')
-            .attr('transform', `translate(${margin.left},${margin.top})`)
+            .attr('transform', `translate(50,${margin.top})`)
             .style('cursor', 'default');
 
       const tooltip = d3.select('body')
             .append('div')
             .attr('class', 'waffle-tooltip')
             .style('position', 'absolute')
-            .style('text-align', 'right')
-            .style('background', '#333')
+            .style('text-align', 'left')
+            .style('font-family', 'benton-sans')
+            .style('background', 'white')
             .style('margin', '3px')
-            .style('color', 'white')
+            .style('color', 'black')
             .style('padding', '3px')
             .style('border', '0px')
             .style('border-radius', '3px') // 3px rule
@@ -144,6 +147,7 @@ function d3waffle() {
       legend.append('text')
             .attr('x', 1.5 * gridSize + magic_padding)
             .attr('y', (d, i) => i * gridSize + i * magic_padding / 2)
+            .attr('font-family', 'benton-sans')
             .style('opacity', 1)
             .html(d => d.name)
             .attr('class', d => `${'waffle-legend-text' + ' '}${d.class}`)
@@ -267,20 +271,18 @@ function cartesianprod(paramArray) {
                         .scale(1/8000)
                         .icon("&#xf007;")
                         .adjust(0.6)
-                        .colorscale(d3.scaleOrdinal(d3.schemeCategory10))
+                        .colorscale(d3.scaleOrdinal().range([ "#338A6C", "#8F679C", "#d18975", "#479BD1", "#f4803f", ]))
                         .appearancetimes(function(d, i){
                           mod = 13;
                           val = i % mod;
                           return val / mod * 1500;
                         })
-                        .height(200);
+                        .height(250);
 
         d3.select("#container-1")
           .datum(data)
           .call(chart_public);
       }
-
-    update(data1)
     </script>
 </head>
 <body>
