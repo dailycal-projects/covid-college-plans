@@ -33,26 +33,6 @@
 	font-size: 14px;
 }
 
-#sponsor-table {
-	display: none;
-	max-width: 600px;
-	margin: 0 auto;
-
-	//font-family: $sans;
-
-	.recipient {
-		margin-bottom: 30px;
-	}
-
-	table {
-		width: 100%;
-
-		.right {
-			text-align: right;
-		}
-	}
-}
-
 .list-helper-text {
 	display: none;
 }
@@ -83,7 +63,7 @@ div.tooltip {
 }
 
 .axis {
-  font: 20px;
+  font: 30px;
 }
 
 .axis path,

@@ -6,6 +6,7 @@
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<center style='font-family:benton-sans'>Reopening Plans for 60 Largest Colleges in US</center>
 
 <!-- Create an element where the map will take place -->
 <div id="bubble_usa"></div>
@@ -16,7 +17,7 @@ var div = d3.select("#bubble_usa").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-var margin = {top: 100, right: 100, bottom: 150, left: 0},
+var margin = {top: 150, right: 300, bottom: 200, left: 200},
 width = pageWidth - margin.left - margin.right;
 width = Math.min(width, 1200 - margin.left - margin.right);
 if (width < 600) {
@@ -35,7 +36,7 @@ var svg1 = d3.select("#bubble_usa").append("svg")
 // Map and projection
 scale = 1050
 frac = 1
-if (pageWidth < 1050) {scale = 680; frac=0.65}
+if (pageWidth < 1050) {scale = 900; frac=0.9}
 if (pageWidth < 600) {scale = 600; frac=0.6}
 var projection = d3.geoMercator()
     .center([-98.5795,39.8283])                // GPS of location to zoom on
@@ -57,15 +58,42 @@ d3.json("https://raw.githubusercontent.com/johan/world.geo.json/master/countries
 
     // Create a color scale
     var color = d3.scaleOrdinal()
-      .domain(['Planning for in-person', 'Proposing a hybrid model',
-       'Planning for online', 'Considering a range of scenarios',
+      .domain(['In-person', 'Hybrid',
+       'Online', 'Considering range of plans',
        'Waiting to decide'])
-      .range(["#338A6C", "#479BD1", "#d18975", "#8F679C", "#f4803f"])
+       .range([ "#d18975", "#338A6C","#8F679C",  "#479BD1", "#f4803f", ])
 
     // Add a scale for bubble size
     var size = d3.scaleLinear()
       .domain([1,100])  // What's in the data
       .range([ 4, 50])  // Size in pixel
+
+      width = pageWidth - margin.left - margin.right;
+      width = Math.min(width, 1200 - margin.left - margin.right);
+      width = Math.max(width, 600)
+
+      var legend = svg1.append("g")
+          .style("font-family", "benton-sans")
+          .style("font-size", 14)
+          .attr("text-anchor", "start")
+        .selectAll("g")
+        .data(['In-person', 'Hybrid',
+         'Online', 'Considering range of plans',
+         'Waiting to decide'])
+        .enter().append("g")
+          .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+      legend.append("rect")
+          .attr("x", pageWidth)
+          .attr("y", 0 - height + 75)
+          .attr("width", 12)
+          .attr("height", 12)
+          .attr("fill", color)
+          .attr("opacity", 0.8);
+      legend.append("text")
+          .attr("x", pageWidth)
+          .attr("y", 0 - height + 81)
+          .attr("dy", "0.32em")
+          .text(function(d) { return d; });
 
     // Draw the map
     svg1.append("g")
@@ -100,6 +128,9 @@ d3.json("https://raw.githubusercontent.com/johan/world.geo.json/master/countries
           .style("opacity", .9)
           let p = "<strong>School</strong>: " + d.group + "<br />" + "<strong>Enrollment</strong>: " + d3.format(",")(d.size).toString() + "<br />" + "<strong>Plan</strong>: " + d.plan.toString()
           div.html(p)
+              .style("width", "210px")
+              .style("height", "130px")
+              .style("text-align", "left")
               .style("left", (d3.event.pageX + 10) + "px")
               .style("top", (d3.event.pageY - 15) + "px")
               .style("font-size", "18x")

@@ -3,11 +3,14 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 // create the svg
-pageWidth = 1200;
-margin = {top: 20, right: 20, bottom: 30, left: 40};
+margin = {top: 60, right: 100, bottom: 50, left: 60};
 width = pageWidth - margin.left - margin.right;
 width = Math.min(width, 600 - margin.left - margin.right)
 height = (width * 0.7) - margin.top - margin.bottom;
+
+var div = d3.select("#stacked_bar").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
 var svg = d3.select("#stacked_bar").append("svg")
               .attr("width", width + margin.left + margin.right)
@@ -26,21 +29,21 @@ var y = d3.scaleLinear()
 
 // set the colors
 var z = d3.scaleOrdinal()
-    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+    .range(["#AB4B50", "#ED9791", "#215775", "#479BD1"]);
 
 var data = [
-  { Enrollment: "6000", "In-person": "18", Online: "3", Other: "5", Hybrid: "7" },
-  { Enrollment: "12000", "In-person": "4", Online: "7", Other: "0", Hybrid: "1" },
-  { Enrollment: "18000", "In-person": "0", Online: "5", Other: "0", Hybrid: "1" },
-  { Enrollment: "24000", "In-person": "0", Online: "4", Other: "1", Hybrid: "2" },
-  { Enrollment: "30000", "In-person": "0", Online: "6", Other: "0", Hybrid: "4" },
-  { Enrollment: "36000", "In-person": "0", Online: "3", Other: "0", Hybrid: "4" },
+  { Enrollment: "6000", "In-person": "18", Online: "3",  Hybrid: "7" , Other: "5",},
+  { Enrollment: "12000", "In-person": "4", Online: "7",  Hybrid: "1" , Other: "0",},
+  { Enrollment: "18000", "In-person": "0", Online: "5",  Hybrid: "1" , Other: "0",},
+  { Enrollment: "24000", "In-person": "0", Online: "4",  Hybrid: "2" , Other: "1",},
+  { Enrollment: "30000", "In-person": "0", Online: "6",  Hybrid: "4" , Other: "0",},
+  { Enrollment: "36000", "In-person": "0", Online: "3",  Hybrid: "4" , Other: "0",},
 ];
 
-  var keys = ["In-person", "Online", "Other", "Hybrid"]
+  var keys = ["In-person", "Hybrid","Online", "Other"]
 
   x.domain(["0", "6000", "12000", "18000", "24000", "30000", "36000"]);
-  y.domain([0, 30]).nice();
+  y.domain([0, 32]).nice();
   z.domain(keys);
 
   g.append("g")
@@ -48,45 +51,78 @@ var data = [
     .data(d3.stack().keys(keys)(data))
     .enter().append("g")
       .attr("fill", function(d) { return z(d.key); })
+      .attr("opacity", 0.9)
     .selectAll("rect")
     .data(function(d) { return d; })
     .enter().append("rect")
-      .attr("x", function(d) { return x(d.data.Enrollment) - 40; })
+      .attr("x", function(d) { return x(d.data.Enrollment) - 30; })
       .attr("y", function(d) { return y(d[1]); })
       .attr("height", function(d) { return y(d[0]) - y(d[1]); })
       .attr("width", x.bandwidth())
-    .on("mouseover", function() { tooltip.style("display", null); })
-    .on("mouseout", function() { tooltip.style("display", "none"); })
-    .on("mousemove", function(d) {
-      console.log(d);
-      var xPosition = d3.mouse(this)[0];
-      var yPosition = d3.mouse(this)[1];
-      tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-      tooltip.select("text").text(d[1] - d[0]);
-    });
+    .on("mouseover", function(d) {
+        div.transition()
+          .duration(200)
+          .style("opacity", .9)
+          let p = (d[1] - d[0]).toString()
+          div.html(p)
+              .style("width", "50px")
+              .style("height", "35px")
+              .style("text-align", "center")
+              .style("left", (d3.event.pageX + 10) + "px")
+              .style("top", (d3.event.pageY - 15) + "px")
+              .style("font-size", "18x")
+              .style("opacity", 0.7);
+          })
+    .on("mouseout", function(d) {
+        div.transition()
+          .duration(300)
+          .style("opacity", 0);
+      });
+
+  g.append("text")
+      .attr("x", (width / 2) - 250)
+      .attr("y", 0 - (margin.top / 1.5))
+      .style("font-size", 18)
+      .style("font-family", "benton-sans")
+      .text("Reopening Plans for Colleges in California (By Enrollment)")
+
+  g.append("text")
+      .attr("x", (width / 2) - 100)
+      .attr("y", height + (margin.bottom/1.2))
+      .style("font-size", 16)
+      .style("font-family", "benton-sans")
+      .text("Undergraduate Enrollment")
+
+  g.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", 0 - 150)
+      .attr("y", 0 - 40)
+      .style("font-size", 16)
+      .style("font-family", "benton-sans")
+      .text("Number of colleges")
 
   g.append("g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + height + ")")
-      .attr("font-family", "benton-sans")
+      .style("font-family", "benton-sans")
+      .style("font-size", 14)
       .call(d3.axisBottom(x));
 
   g.append("g")
       .attr("class", "axis")
-      .attr("font-size", 14)
+      .style("font-size", 14)
+      .style("font-family", "benton-sans")
       .call(d3.axisLeft(y).ticks(5))
     .append("text")
       .attr("x", 2)
       .attr("y", y(y.ticks().pop()) + 0.5)
       .attr("dy", "0.32em")
       .attr("fill", "#000")
-      .attr("font-family", "benton-sans")
-      .attr("font-weight", "bold")
       .attr("text-anchor", "start");
 
   var legend = svg.append("g")
-      .attr("font-family", "benton-sans")
-      .attr("font-size", 14)
+      .style("font-family", "benton-sans")
+      .style("font-size", 14)
       .attr("text-anchor", "end")
     .selectAll("g")
     .data(keys.slice().reverse())
@@ -94,32 +130,16 @@ var data = [
       .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
   legend.append("rect")
-      .attr("x", width - 50)
+      .attr("x", width + 20)
+      .attr("y", 35)
       .attr("width", 19)
       .attr("height", 19)
       .attr("fill", z);
 
   legend.append("text")
-      .attr("x", width - 20)
+      .attr("x", width + 50)
       .attr("text-anchor", "start")
-      .attr("y", 9.5)
+      .attr("y", 44)
       .attr("dy", "0.32em")
       .text(function(d) { return d; });
-
-  // Prep the tooltip bits, initial display is hidden
-  var tooltip = svg.append("g")
-    .attr("class", "tooltip")
-    .style("display", "none");
-  tooltip.append("rect")
-    .attr("width", 30)
-    .attr("height", 20)
-    .attr("fill", "white")
-    .style("opacity", 0.5);
-  tooltip.append("text")
-    .attr("x", 15)
-    .attr("dy", "1.2em")
-    .style("text-anchor", "middle")
-    .attr("font-family", "benton-sans")
-    .attr("font-size", "14px")
-    .attr("font-weight", "bold");
 </script>
