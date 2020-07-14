@@ -1,8 +1,8 @@
 {
   "id": "3448608090",
-  "publishPath": "2020/covid-response/",
-  "stagingUrl": "http://stage-projects.dailycal.org/2020/covid-response/index.html",
-  "url": "http://projects.dailycal.org/2020/covid-response/",
+  "publishPath": "2020/mapping-covid-response/",
+  "stagingUrl": "http://stage-projects.dailycal.org/2020/mapping-covid-response/index.html",
+  "url": "http://projects.dailycal.org/2020/mapping-covid-response/",
   "timestamp": "2018-04-10T08:13-0400",
   "dateline": "04/10/18 08:13 PM EDT",
   "header": {
@@ -24,7 +24,7 @@
       "author": "@dailycal"
     },
     "image": {
-      "url": "http://projects.dailycal.org/2020/covid-response/images/share.jpg",
+      "url": "http://projects.dailycal.org/2020/mapping-covid-response/images/share.jpg",
       "alt": "<Text>",
       "type": "image/jpeg",
       "width": "600",
