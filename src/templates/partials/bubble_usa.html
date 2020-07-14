@@ -18,7 +18,9 @@ var div = d3.select("#bubble_usa").append("div")
 var margin = {top: 0, right: 0, bottom: 0, left: 0},
 width_usa = pageWidth - margin.left - margin.right;
 width_usa = Math.min(width_usa, 1200 - margin.left - margin.right);
-height = (width_usa * 0.7) - margin.top - margin.bottom;
+height = (width_usa * 0.65) - margin.top - margin.bottom;
+
+if ((width_usa < 900) && (width_usa > 600)) {width_usa = 1100; height = 600;}
 
 if (width_usa < 600) {
     width_usa = 600;
@@ -34,11 +36,12 @@ var svg1 = d3.select("#bubble_usa").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // Map and projection
-scale = 1000
+scale = 1050
 frac = 1
 fontsize = "18px"
 tipheight = "130px"
-if (width_usa < 1050) {scale = 900; frac=0.9}
+if (width_usa < 1150) {scale = 950; frac=0.9}
+if (width_usa < 1050) {scale = 890; frac=0.9}
 if (width_usa <= 600) {scale = 550; frac=0.6; fontsize="14px"; tipheight="100px"}
 console.log(width_usa);
 var projection = d3.geoMercator()
