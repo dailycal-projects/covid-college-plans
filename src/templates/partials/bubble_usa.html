@@ -6,25 +6,26 @@
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<center style='font-family:benton-sans'>Reopening Plans for 60 Largest Colleges in US</center>
 
 <!-- Create an element where the map will take place -->
 <div id="bubble_usa"></div>
 <script>
 
+let pageWidth = $(window).width();
 var div = d3.select("#bubble_usa").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-var margin = {top: 0, right: 0, bottom: 0, left: 0},
+var margin = {top: 0, right: 0, bottom: 100, left: 0},
 width_usa = pageWidth - margin.left - margin.right;
 width_usa = Math.min(width_usa, 1200 - margin.left - margin.right);
 height = (width_usa * 0.65) - margin.top - margin.bottom;
 
-if ((width_usa < 900) && (width_usa > 600)) {width_usa = 1100; height = 600;}
-
-if (width_usa < 600) {
-    width_usa = 600;
-    height = (width_usa * 0.6) - margin.top - margin.bottom;
+if ((width_usa < 900) && (width_usa > 700)) {width_usa = 1100; height = 600;}
+if (width_usa < 700) {
+    width_usa = 700;
+    height = (width_usa * 0.8) - margin.top - margin.bottom;
 }
 
 
@@ -41,8 +42,8 @@ frac = 1
 fontsize = "18px"
 tipheight = "130px"
 if (width_usa < 1150) {scale = 950; frac=0.9}
-if (width_usa < 1050) {scale = 890; frac=0.9}
-if (width_usa <= 600) {scale = 550; frac=0.6; fontsize="14px"; tipheight="100px"}
+if (width_usa < 1050) {scale = 830; frac=0.9}
+if (width_usa <= 700) {scale = 640; frac=0.6; fontsize="14px"; tipheight="100px"}
 console.log(width_usa);
 var projection = d3.geoMercator()
     .center([-98.5795,39.8283])                // GPS of location to zoom on
@@ -73,6 +74,30 @@ d3.json("https://raw.githubusercontent.com/johan/world.geo.json/master/countries
     var size = d3.scaleLinear()
       .domain([1,100])  // What's in the data
       .range([ 4, 50])  // Size in pixel
+
+      var legend = svg1.append("g")
+          .style("font-family", "benton-sans")
+          .style("font-size", 14)
+          .attr("text-anchor", "start")
+          .attr('transform', "translate(" + (width_usa/4) + "," + ((width_usa * 0.45) + margin.bottom) + ")")
+        .selectAll("g")
+        .data(['In-person', 'Hybrid',
+         'Online', 'Considering range of plans',
+         'Waiting to decide'])
+        .enter().append("g")
+           .attr("class", "legend")
+          .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+      legend.append("rect")
+          .attr("x", 0)
+          .attr("width", 12)
+          .attr("height", 12)
+          .attr("fill", color)
+          .attr("opacity", 0.8);
+      legend.append("text")
+          .attr("x", 20)
+          .attr("y", 9)
+          .attr("dy", "0.32em")
+          .text(function(d) { return d; });
 
     // Draw the map
     svg1.append("g")

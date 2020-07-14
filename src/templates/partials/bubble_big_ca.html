@@ -22,6 +22,7 @@ width_ca = Math.min(width_ca, 1200 - margin.left - margin.right);
 width_ca = Math.max(width_ca, 460);
 
 height = (0.8 * width_ca) - margin.top - margin.bottom;
+if (width_ca <= 800) {height = (1 * width_ca) - margin.top - margin.bottom;}
 if (width_ca <= 600) {height = (1.5 * width_ca) - margin.top - margin.bottom;}
 
 // The svg2
@@ -71,7 +72,6 @@ d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/g
     if (width_ca <= 800) {rightShift = -100};
     if (width_ca <= 600) {rightShift = 0};
 
-     console.log(width_ca);
       var legend = svg2.append("g")
           .style("font-family", "benton-sans")
           .style("font-size", 14)
