@@ -32,18 +32,18 @@ var y = d3.scaleLinear()
 
 // set the colors
 var z = d3.scaleOrdinal()
-    .range(["#AB4B50", "#ED9791", "#215775", "#479BD1"]);
+       .range([ "#d18975", "#8F679C", "#338A6C", "#479BD1", "#f4803f"])
 
 var data = [
   { Enrollment: "Small Colleges", "In-person": "16", Online: "1",  Hybrid: "7" , Other: "5",},
-  { Enrollment: "Mid-Size Colleges", "In-person": "4", Online: "11",  Hybrid: "2" , Other: "0",},
+  { Enrollment: "Midsize Colleges", "In-person": "4", Online: "11",  Hybrid: "2" , Other: "0",},
   { Enrollment: "Large Colleges", "In-person": "0", Online: "11",  Hybrid: "6" , Other: "1",},
 
 ];
 
   var keys = ["In-person", "Hybrid","Online", "Other"]
 
-  x.domain(["Small Colleges", "Mid-Size Colleges", "Large Colleges"]);
+  x.domain(["Small Colleges", "Midsize Colleges", "Large Colleges"]);
   y.domain([0, 30]).nice();
   z.domain(keys);
 
@@ -52,7 +52,7 @@ var data = [
     .data(d3.stack().keys(keys)(data))
     .enter().append("g")
       .attr("fill", function(d) { return z(d.key); })
-      .attr("opacity", 0.9)
+      .attr("opacity", 0.85)
     .selectAll("rect")
     .data(function(d) { return d; })
     .enter().append("rect")
@@ -63,7 +63,7 @@ var data = [
     .on("mouseover", function(d) {
         div.transition()
           .duration(200)
-          .style("opacity", .9)
+          .style("opacity", 1)
           let p = (d[1] - d[0]).toString()
           div.html(p)
               .style("width", "50px")

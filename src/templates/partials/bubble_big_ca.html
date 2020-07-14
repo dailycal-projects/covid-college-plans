@@ -16,30 +16,32 @@ var div = d3.select("#bubble_ca").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-var margin = {top: 50, right: 50, bottom: 0, left: 0},
-width = pageWidth - margin.left - margin.right;
-width = Math.min(width, 1200 - margin.left - margin.right);
-width = Math.max(width, 600);
+var margin = {top: 50, right: 100, bottom: 0, left: 40},
+width_ca = pageWidth - margin.left - margin.right;
+width_ca = Math.min(width_ca, 1200 - margin.left - margin.right);
+width_ca = Math.max(width_ca, 600);
 
-height = (0.7 * width) - margin.top - margin.bottom;
-if (width < 600) {height = (1.1 * width) - margin.top - margin.bottom;}
+height = (0.7 * width_ca) - margin.top - margin.bottom;
+if (width_ca == 600) {height = (1 * width_ca) - margin.top - margin.bottom;}
 
 // The svg2
 var svg2 = d3.select("#bubble_ca").append("svg")
-    .attr("width", width + margin.left + margin.right)
+    .attr("width", width_ca + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 scale = 3000
 frac = 1
-if (width < 900) {scale = 2000, frac=0.6}
-if (width < 600) {scale = 1500, frac=0.5}
+fontsize = "18px"
+tipheight = "130px"
+if (width_ca < 900) {scale = 2400, frac=0.6}
+if (width_ca <= 600) {fontsize="14px"; tipheight="100px"}
 // Map and projection
 var projection2 = d3.geoMercator()
     .center([-119.4179, 36.7783])                // GPS of location to zoom on
     .scale(scale)                       // This is like the zoom
-    .translate([ width/2, height/2 ])
+    .translate([ width_ca/2, height/2 ])
 
 // Create data for circles:
 var markers_ca_all = [
@@ -65,26 +67,28 @@ d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/g
       .domain([1,100])  // What's in the data
       .range([ 4, 50])  // Size in pixel
 
+     console.log(width_ca);
       var legend = svg2.append("g")
           .style("font-family", "benton-sans")
           .style("font-size", 14)
           .attr("text-anchor", "start")
+          .attr('transform', "translate(" + (width_ca - margin.left - margin.right - 100) + ",0)")
         .selectAll("g")
         .data(['In-person', 'Hybrid',
          'Online', 'Considering range of plans',
          'Waiting to decide'])
         .enter().append("g")
+           .attr("class", "legend")
           .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
       legend.append("rect")
-          .attr("x", 600)
-          .attr("y", 75)
+          .attr("x", 0)
           .attr("width", 12)
           .attr("height", 12)
           .attr("fill", color)
           .attr("opacity", 0.8);
       legend.append("text")
-          .attr("x", 620)
-          .attr("y", 81)
+          .attr("x", 20)
+          .attr("y", 9)
           .attr("dy", "0.32em")
           .text(function(d) { return d; });
 
@@ -122,11 +126,11 @@ d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/g
           let p = "<strong>School</strong>: " + d.group + "<br />" + "<strong>Enrollment</strong>: " + d3.format(",")(d.size).toString() + "<br />" + "<strong>Plan</strong>: " + d.plan.toString()
           div.html(p)
               .style("width", "210px")
-              .style("height", "130px")
+              .style("height", tipheight)
               .style("text-align", "left")
               .style("left", (d3.event.pageX + 10) + "px")
               .style("top", (d3.event.pageY - 15) + "px")
-              .style("font-size", "18x")
+              .style("font-size", fontsize)
               .style("opacity", 0.7);
           })
       .on("mouseout", function(d) {

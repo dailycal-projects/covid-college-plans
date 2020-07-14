@@ -15,33 +15,36 @@ var div = d3.select("#bubble_usa").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-var margin = {top: -100, right: 300, bottom: 0, left: 200},
-width = pageWidth - margin.left - margin.right;
-width = Math.min(width, 1200 - margin.left - margin.right);
-height = (width) - margin.top - margin.bottom;
+var margin = {top: 0, right: 0, bottom: 0, left: 0},
+width_usa = pageWidth - margin.left - margin.right;
+width_usa = Math.min(width_usa, 1200 - margin.left - margin.right);
+height = (width_usa * 0.7) - margin.top - margin.bottom;
 
-if (width < 600) {
-    width = 600;
-    height = (width * 0.8) - margin.top - margin.bottom;
+if (width_usa < 600) {
+    width_usa = 600;
+    height = (width_usa * 0.6) - margin.top - margin.bottom;
 }
 
 
 // The svg
 var svg1 = d3.select("#bubble_usa").append("svg")
-    .attr("width", width + margin.left + margin.right)
+    .attr("width", width_usa + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // Map and projection
-scale = 1050
+scale = 1000
 frac = 1
-if (pageWidth < 1050) {scale = 900; frac=0.9}
-if (pageWidth < 600) {scale = 600; frac=0.6}
+fontsize = "18px"
+tipheight = "130px"
+if (width_usa < 1050) {scale = 900; frac=0.9}
+if (width_usa <= 600) {scale = 550; frac=0.6; fontsize="14px"; tipheight="100px"}
+console.log(width_usa);
 var projection = d3.geoMercator()
     .center([-98.5795,39.8283])                // GPS of location to zoom on
     .scale(scale)                       // This is like the zoom
-    .translate([ width/2 -200, height/2 ])
+    .translate([ width_usa/2, height/2 ])
 
 // Create data for circles:
 var markers_usa = [
@@ -67,10 +70,6 @@ d3.json("https://raw.githubusercontent.com/johan/world.geo.json/master/countries
     var size = d3.scaleLinear()
       .domain([1,100])  // What's in the data
       .range([ 4, 50])  // Size in pixel
-
-      width = pageWidth - margin.left - margin.right;
-      width = Math.min(width, 1200 - margin.left - margin.right);
-      width = Math.max(width, 600)
 
     // Draw the map
     svg1.append("g")
@@ -106,11 +105,11 @@ d3.json("https://raw.githubusercontent.com/johan/world.geo.json/master/countries
           let p = "<strong>School</strong>: " + d.group + "<br />" + "<strong>Enrollment</strong>: " + d3.format(",")(d.size).toString() + "<br />" + "<strong>Plan</strong>: " + d.plan.toString()
           div.html(p)
               .style("width", "210px")
-              .style("height", "130px")
+              .style("height", tipheight)
               .style("text-align", "left")
               .style("left", (d3.event.pageX + 10) + "px")
               .style("top", (d3.event.pageY - 15) + "px")
-              .style("font-size", "18x")
+              .style("font-size", fontsize)
               .style("opacity", 0.7);
           })
       .on("mouseout", function(d) {
