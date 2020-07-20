@@ -6,7 +6,7 @@
     <title>d3-waffle</title>
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <center style='font-family:benton-sans'>How will California's college students attend school in the fall?</center></br>
+    <center style='font-family:benton-sans;font-size:18px'>How will California's college students attend school in the fall?</center></br>
     <button onclick="update(data1)">All&nbsp;</button>
     <button onclick="update(data2)">Public Colleges&nbsp;</button>
     <button onclick="update(data3)">Private Colleges&nbsp;</button>
@@ -23,7 +23,10 @@ function d3waffle() {
     appearancetimes = function (d, i) { return 500; },
     magic_padding = 5;
     width = 950
+  if (pageWidth < 600) {width=700;}
     height = (1.2 * width) - margin.bottom - margin.top;
+
+
 
   function chart(selection) {
     selection.each((data) => {
@@ -137,7 +140,7 @@ function d3waffle() {
             .attr('class', d => d.class)
             .attr('font-family', 'FontAwesome')
             .attr('transform', d => `translate(${gridSize / 2},${5 / 6 * gridSize})`)
-            .style('fill', d => colorscale(d.class));
+            .style('fill', d => colorscale(d.class))
             /* .style("font-size", function(d) {
               val = 9;
               val2 = 2.5;
@@ -149,6 +152,7 @@ function d3waffle() {
             .attr('x', 1.5 * gridSize + magic_padding)
             .attr('y', (d, i) => i * gridSize + i * magic_padding / 2)
             .attr('font-family', 'benton-sans')
+            .style('font-size', 18)
             .style('opacity', 1)
             .html(d => d.name)
             .attr('class', d => `${'waffle-legend-text' + ' '}${d.class}`)
@@ -267,8 +271,10 @@ function cartesianprod(paramArray) {
         var data3 = [{"name": "Online", "value": 19907}, {"name": "Hybrid", "value": 26378}, {"name": "In-person", "value": 65740}, {"name": "Other", "value": 7623}];
 
       function update(data) {
+        rows = 5
+        if (pageWidth < 400) {rows = 6}
         var chart_public = d3waffle()
-                        .rows(5)
+                        .rows(rows)
                         .scale(1/8000)
                         .icon("&#xf007;")
                         .adjust(0.6)

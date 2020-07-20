@@ -95,18 +95,25 @@ var data = [
       //.style("font-family", "benton-sans")
       //.text("Number of colleges")
 
+  scale_bar = 1;
+  //if (width < 900) {scale_bar=1;}
+  if (pageWidth < 600) {scale_bar=1.5;}
+  fsize = 16 * scale_bar;
+  square = 16 * scale_bar;
+  spacing = 22 * scale_bar;
+
   g.append("g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + height + ")")
       .style("font-family", "benton-sans")
-      .style("font-size", 14)
+      .style("font-size", fsize)
       .call(d3.axisBottom(x).tickPadding(10).tickSize(3));
 
   g.append("g")
       .attr("class", "axis")
-      .style("font-size", 14)
+      .style("font-size", fsize)
       .style("font-family", "benton-sans")
-      .call(d3.axisLeft(y).ticks(5).tickSize(0).tickPadding(25))
+      .call(d3.axisLeft(y).tickValues([5,10,15,20,25,30]).ticks(5).tickSize(0).tickPadding(25))
     .append("text")
       .attr("x", 2)
       .attr("y", y(y.ticks().pop()) + 0.5)
@@ -114,26 +121,27 @@ var data = [
       .attr("fill", "#000")
       .attr("text-anchor", "start");
 
+
   var legend = svg.append("g")
       .style("font-family", "benton-sans")
-      .style("font-size", 14)
+      .style("font-size", fsize)
       .attr("text-anchor", "end")
     .selectAll("g")
     .data(keys)
     .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+      .attr("transform", function(d, i) { return "translate(0," + (i * spacing) + ")"; });
 
   legend.append("rect")
       .attr("x", width + 20)
       .attr("y", 50)
-      .attr("width", 19)
-      .attr("height", 19)
+      .attr("width", square)
+  .attr("height", square)
       .attr("fill", z);
 
   legend.append("text")
       .attr("x", width + 50)
       .attr("text-anchor", "start")
-      .attr("y", 59)
+      .attr("y", 64)
       .attr("dy", "0.32em")
       .text(function(d) { return d; });
 </script>
