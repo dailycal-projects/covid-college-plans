@@ -22,8 +22,10 @@ function d3waffle() {
     colorscale = d3.scaleOrdinal(d3.schemeCategory10),
     appearancetimes = function (d, i) { return 500; },
     magic_padding = 5;
-    width = 950
-  if (pageWidth < 600) {width=700;}
+    width = pageWidth;
+    width = Math.min(width, 1000 - margin.left - margin.right)
+    width = Math.max(width, 950)
+    //if (width < 600) {width=700;}
     height = (1.2 * width) - margin.bottom - margin.top;
 
 

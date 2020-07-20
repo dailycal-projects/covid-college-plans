@@ -41,9 +41,10 @@ scale = 1050
 frac = 1
 fontsize = "18px"
 tipheight = "130px"
+tipwidth = "210px"
 if (width_usa < 1150) {scale = 950; frac=0.9}
 if (width_usa < 1050) {scale = 830; frac=0.9}
-if (width_usa <= 700) {scale = 640; frac=0.6; fontsize="14px"; tipheight="100px"}
+if (width_usa <= 700) {scale = 640; frac=0.6; fontsize="14px"; tipheight="100px", tipwidth="150px"}
 console.log(width_usa);
 var projection = d3.geoMercator()
     .center([-98.5795,39.8283])                // GPS of location to zoom on
@@ -120,6 +121,11 @@ d3.json("https://raw.githubusercontent.com/johan/world.geo.json/master/countries
         .style("stroke", "black")
         .style("opacity", 0.5)
 
+    function tooltip_pos(data) {
+        if (data.long > -111) {return -150}
+        else {return 10}
+
+    }
     // Add circles:
     svg1
       .selectAll("myCircles")
@@ -135,15 +141,16 @@ d3.json("https://raw.githubusercontent.com/johan/world.geo.json/master/countries
         .attr("fill-opacity", .7)
       .on("mouseover", function(d) {
         d3.select(this).style("fill", d3.rgb(color(d.plan)).darker(2))
+        pos = tooltip_pos(d)
         div.transition()
           .duration(200)
           .style("opacity", .9)
           let p = "<strong>School</strong>: " + d.group + "<br />" + "<strong>Enrollment</strong>: " + d3.format(",")(d.size).toString() + "<br />" + "<strong>Plan</strong>: " + d.plan.toString()
           div.html(p)
-              .style("width", "210px")
+              .style("width", tipwidth)
               .style("height", tipheight)
               .style("text-align", "left")
-              .style("left", (d3.event.pageX + 10) + "px")
+              .style("left", (d3.event.pageX + pos) + "px")
               .style("top", (d3.event.pageY - 15) + "px")
               .style("font-size", fontsize)
               .style("opacity", 0.7);
