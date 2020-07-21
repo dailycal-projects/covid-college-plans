@@ -97,7 +97,7 @@ var data = [
 
   scale_bar = 1;
   //if (width < 900) {scale_bar=1;}
-  if (pageWidth < 600) {scale_bar=1.5;}
+  if (pageWidth < 600) {scale_bar=1.7;}
   fsize = 16 * scale_bar;
   square = 16 * scale_bar;
   spacing = 22 * scale_bar;
@@ -132,8 +132,8 @@ var data = [
       .attr("transform", function(d, i) { return "translate(0," + (i * spacing) + ")"; });
 
   legend.append("rect")
-      .attr("x", width + 20)
-      .attr("y", 50)
+      .attr("x", width)
+      .attr("y", 30)
       .attr("width", square)
   .attr("height", square)
       .attr("fill", z);
@@ -141,7 +141,7 @@ var data = [
   legend.append("text")
       .attr("x", width + 50)
       .attr("text-anchor", "start")
-      .attr("y", 64)
+      .attr("y", 44)
       .attr("dy", "0.32em")
       .text(function(d) { return d; });
 </script>
