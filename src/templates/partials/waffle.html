@@ -22,12 +22,12 @@ function d3waffle() {
     colorscale = d3.scaleOrdinal(d3.schemeCategory10),
     appearancetimes = function (d, i) { return 500; },
     magic_padding = 5;
-    width = pageWidth;
-    width = Math.min(width, 1000 - margin.left - margin.right)
-    if (pageWidth < 900) {width = 900;}
-    if (pageWidth < 500) {width = 800;}
-    //if (width < 600) {width=700;}
-    height = (1.2 * width) - margin.bottom - margin.top;
+    width_waffle = pageWidth;
+    width_waffle = Math.min(width_waffle, 1000 - margin.left - margin.right)
+    if (pageWidth < 900) {width_waffle = 900;}
+    if (pageWidth < 500) {width_waffle = 600;}
+    //if (width_waffle < 600) {width_waffle=700;}
+    height = (1.2 * width_waffle) - margin.bottom - margin.top;
 
   function chart(selection) {
     selection.each((data) => {
@@ -68,7 +68,7 @@ function d3waffle() {
       xpos = 40
       if (pageWidth > 900) {xpos = 100};
       const svg = selection.append('svg')
-            .attr('width', width)
+            .attr('width', width_waffle)
             .attr('height', height)
             .append('g')
             .attr('transform', `translate(${xpos},${margin.top})`)
@@ -129,11 +129,14 @@ function d3waffle() {
             .on('mousemove', mousemove)
             .style('opacity', 0);
 
+
+      legend_pos = 320 * 0.7 * (width_waffle/800)
+      if (width_waffle == 600) {legend_pos = 200}
       const legend = svg.selectAll('.legend')
           .data(data)
           .enter().append('g')
           .attr('class', d => `${'legend' + ' '}${d.class}`)
-          .attr('transform', d => `translate(${cols * gridSize + magic_padding},${magic_padding})`);
+          .attr('transform', d => `translate(${(width_waffle - legend_pos)+ magic_padding},${magic_padding})`);
 
       legend.append('text')
             .attr('x', gridSize)
