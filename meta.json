@@ -1,19 +1,18 @@
 {
   "id": "3448608090",
   "publishPath": "2020/mapping-covid-response/",
-  "stagingUrl": "http://stage-projects.dailycal.org/2020/mapping-covid-response/index.html",
   "url": "http://projects.dailycal.org/2020/mapping-covid-response/",
-  "timestamp": "2018-04-10T08:13-0400",
-  "dateline": "04/10/18 08:13 PM EDT",
+  "timestamp": "2020-07-24T08:13-0400",
+  "dateline": "07/24/20 08:13 PM PST",
   "header": {
-    "headline": "This is your headline in the metadata file",
-    "subhed": "Subhed lives in the metadata.",
+    "headline": "Mapping College Plans for Fall 2020",
+    "subhed": "How does UC Berkeley compare to its peers?",
     "byline": "Byline in metadata",
     "byline_link": "https://www.dailycal.org/"
   },
   "share": {
     "fbook": {
-      "card_title": "covid-response",
+      "card_title": "Mapping College Plans for Fall 2020",
       "card_description": "UC Berkeley's independent student-run newspaper",
       "author": "dailycal"
     },
@@ -24,12 +23,12 @@
       "author": "@dailycal"
     },
     "image": {
-      "url": "http://projects.dailycal.org/2020/mapping-covid-response/images/share.jpg",
-      "alt": "<Text>",
+      "url": "https://www.dailycal.org/assets/uploads/2020/05/graduation_karenchow_file.jpg",
+      "alt": "Mapping College Plans for Fall 2020",
       "type": "image/jpeg",
-      "width": "600",
-      "height": "300"
+      "width": "900",
+      "height": "580"
     },
-    "keywords": "Daily Cal, news"
+    "keywords": "Daily Cal, COVID-19, reopening, coronavirus"
   }
 }
