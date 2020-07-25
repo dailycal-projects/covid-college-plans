@@ -68,13 +68,14 @@ d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/g
       .domain([1,100])  // What's in the data
       .range([ 4, 50])  // Size in pixel
 
+    console.log(width_ca);
     rightShift = 200;
-    if (width_ca <= 800) {rightShift = -100};
+    if (width_ca <= 800) {rightShift = 100};
     if (width_ca <= 600) {rightShift = 0};
 
     scale_legend = 1;
-    if (width_usa == 1100) {scale_legend=2;}
-    if (width_usa == 700) {scale_legend=1.5;}
+    if (width_ca == 1100) {scale_legend=2;}
+    if (width_ca == 700) {scale_legend=1.5;}
     fsize = 16 * scale_legend;
     square = 16 * scale_legend;
     spacing = 22 * scale_legend;
