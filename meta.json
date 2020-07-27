@@ -23,11 +23,11 @@
       "author": "@dailycal"
     },
     "image": {
-      "url": "https://www.dailycal.org/assets/uploads/2020/05/graduation_karenchow_file.jpg",
+      "url": "http://projects.dailycal.org/2020/mapping-covid-response/images/campus.jpg",
       "alt": "Mapping College Plans for Fall 2020",
       "type": "image/jpeg",
-      "width": "900",
-      "height": "580"
+      "width": "1200",
+      "height": "630"
     },
     "keywords": "Daily Cal, COVID-19, reopening, coronavirus"
   }
