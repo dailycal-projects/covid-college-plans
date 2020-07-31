@@ -23,13 +23,13 @@
 }
 
 .story strong {
-    font-family: "benton-sans";
-    font-weight: normal;
+    font-family: "benton-sans-bold";
+    font-weight: bold;
 }
 
 .story b {
     font-family: "benton-sans";
-    font-weight: normal;
+    font-weight: bold;
 }
 
 .story img {

@@ -13,13 +13,13 @@
   "share": {
     "fbook": {
       "card_title": "Mapping College Plans for Fall 2020",
-      "card_description": "UC Berkeley's independent student-run newspaper",
+      "card_description": "We took a look at how UC Berkeley's fall reopening plans compare to other colleges in California.",
       "author": "dailycal"
     },
     "twitter": {
       "card_title": "Mapping College Plans for Fall 2020",
-      "share_tweet": "UC Berkeley's independent student-run newspaper",
-      "card_description": "The latest news from The Daily Californian.",
+      "share_tweet": "We took a look at how UC Berkeley's fall reopening plans compare to other colleges in California.",
+      "card_description": "We compared UC Berkeley to its peers.",
       "author": "@dailycal"
     },
     "image": {
