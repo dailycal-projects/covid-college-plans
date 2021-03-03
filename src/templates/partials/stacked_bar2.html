@@ -6,14 +6,13 @@
 <script>
 // create the svg
 
-var formatPercent = d3.format(".0%");
 pageWidth = 1200;
 
 margin = {top: 60, right: 100, bottom: 50, left: 70};
 width = pageWidth - margin.left - margin.right;
 width = Math.min(width, 600 - margin.left - margin.right)
 width = Math.max(width, 500)
-height = (width) - margin.top - margin.bottom;
+height = (width * 0.9) - margin.top - margin.bottom;
 
 var div = d3.select("#stacked_bar").append("div")
     .attr("class", "tooltip")
@@ -27,7 +26,7 @@ g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.
 // set x scale
 var x = d3.scaleBand()
     .rangeRound([0, width])
-    .paddingInner(0.5)
+    .paddingInner(0.7)
     .align(0.1);
 
 // set y scale
@@ -39,17 +38,17 @@ var z = d3.scaleOrdinal()
        .range([ "#d18975", "#8F679C", "#338A6C", "#479BD1", "#f4803f"])
 
 var data = [
-  { Enrollment: "White", "Citation": "8796", Warning: "10854",  Arrest: "563" , Other: "331", Total:"20544"},
-  { Enrollment: "Black", "Citation": "4540", Warning: "13939",  Arrest: "897" , Other: "400",Total:"19776"},
-  { Enrollment: "Hispanic", "Citation": "2491", Warning: "4670",  Arrest: "266" , Other: "107",Total:"7534"},
-  { Enrollment: "Other", "Citation": "2381", Warning: "3356",  Arrest: "92" , Other: "56",Total:"5885"},
-  { Enrollment: "Asian", "Citation": "2054", Warning: "2398",  Arrest: "112" , Other: "57",Total:"4621"},
+  { Enrollment: "2010", "White": "1155", Asian: "483",  Black: "295" , Hispanic: "178", Other: "263",},
+  { Enrollment: "2011", "White": "12", Asian: "7",  Black: "9" , Hispanic: "", Other: "1",},
+  { Enrollment: "2012", "White": "12", Asian: "7",  Black: "9" , Hispanic: "218", Other: "1",},
+  { Enrollment: "2013", "White": "910", Asian: "338",  Black: "319" , Hispanic: "", Other: "1",},
+  { Enrollment: "2014", "White": "969", Asian: "452",  Black: "246" , Hispanic: "221", Other: "309",},
 ];
 
-  var keys = ["Citation", "Warning", "Arrest", "Other"]
+  var keys = ["In-person", "Hybrid","Online", "Other"]
 
-  x.domain(["White", "Black", "Hispanic", "Other", "Asian"]);
-  y.domain([0, 21000]).nice();
+  x.domain(["Small Colleges", "Midsize Colleges", "Large Colleges"]);
+  y.domain([0, 3000]).nice();
   z.domain(keys);
 
   g.append("g")
@@ -69,10 +68,10 @@ var data = [
         div.transition()
           .duration(200)
           .style("opacity", 1)
-          let p = d3.format(',')((d[1] - d[0]).toString()) + " (" + formatPercent((d[1] - d[0]) / d.data.Total) + ")"
+          let p = (d[1] - d[0]).toString()
           div.html(p)
-              .style("width", "75px")
-              .style("height", "70px")
+              .style("width", "50px")
+              .style("height", "35px")
               .style("text-align", "center")
               .style("left", (d3.event.pageX + 10) + "px")
               .style("top", (d3.event.pageY - 15) + "px")
@@ -118,7 +117,7 @@ var data = [
       .attr("class", "axis")
       .style("font-size", fsize)
       .style("font-family", "benton-sans")
-      .call(d3.axisLeft(y))//.ticks(5).tickSize(0).tickPadding(25))
+      .call(d3.axisLeft(y).tickValues([5,10,15,20,25,30]).ticks(5).tickSize(0).tickPadding(25))
     .append("text")
       .attr("x", 2)
       .attr("y", y(y.ticks().pop()) + 0.5)

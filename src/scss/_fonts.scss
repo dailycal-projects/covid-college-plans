@@ -17,6 +17,11 @@ $sans: $lato;
 }
 
 @font-face {
+  font-family: "benton-sans";
+  src: url("../fonts/BentonSans-Light.otf") format("opentype");
+}
+
+@font-face {
   font-family: "tiempos";
   src: url("../fonts/TiemposHeadline-Medium.otf") format("opentype");
 }
