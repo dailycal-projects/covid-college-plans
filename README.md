@@ -2,7 +2,7 @@
 
 | Title | Mapping College Reopening Plans|
 |-|-|
-| Developer    | [Alex Zhao](axyzhao@berkeley.edu) |
+| Developer    | [Alex Zhao](mailto:axyzhao@berkeley.edu) |
 | Link | [http://projects.dailycal.org/2020/covid-response/](http://projects.dailycal.org/2020/mapping-covid-response/) |
 
 
